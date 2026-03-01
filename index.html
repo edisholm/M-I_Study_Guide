@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measure & Integration Theory — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    packages: {'[+]': ['ams']}
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<style>
+  :root {
+    --ink:       #1a1614;
+    --paper:     #faf8f4;
+    --cream:     #f2ede4;
+    --rule:      #d4c9b8;
+    --accent:    #8b3a2a;
+    --accent2:   #2a5c8b;
+    --accent3:   #2a6b45;
+    --gold:      #a07c30;
+    --sidebar:   #e8e1d5;
+    --code-bg:   #1e1c1a;
+    --code-fg:   #e8d9c0;
+    --shadow:    rgba(80,60,40,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* ── LAYOUT ── */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  nav {
+    background: var(--sidebar);
+    border-right: 1px solid var(--rule);
+    padding: 2.5rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    font-size: 13px;
+    scrollbar-width: thin;
+  }
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-track { background: transparent; }
+  nav::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.6rem;
+    padding-bottom: .8rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  nav ul { list-style: none; }
+  nav ul li { margin: .15rem 0; }
+  nav ul li a {
+    display: block;
+    padding: .3rem .5rem;
+    color: #5a5040;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background .15s, color .15s;
+    line-height: 1.4;
+  }
+  nav ul li a:hover { background: var(--cream); color: var(--accent); }
+  nav ul li.section > a {
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: .8rem;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  nav ul li.sub > a { padding-left: 1rem; font-size: 12px; }
+
+  /* ── MAIN ── */
+  main {
+    padding: 4rem 5rem 6rem;
+    max-width: 860px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    margin-bottom: 5rem;
+    padding-bottom: 3rem;
+    border-bottom: 2px solid var(--rule);
+  }
+  .cover-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.4rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .8rem;
+  }
+  .cover-sub {
+    font-size: 1.15rem;
+    color: #6a5c48;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+  .cover-pills {
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+  }
+  .pill {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    padding: .3rem .9rem;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #5a5040;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pill.red { background: #f8ece9; border-color: #d4a89a; color: var(--accent); }
+  .pill.blue { background: #e9eff8; border-color: #9ab4d4; color: var(--accent2); }
+  .pill.green { background: #e9f5ee; border-color: #9ac4ae; color: var(--accent3); }
+
+  /* ── SECTION HEADINGS ── */
+  .topic-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin: 4rem 0 1.5rem;
+    padding-bottom: .8rem;
+    border-bottom: 1.5px solid var(--rule);
+  }
+  .topic-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--rule);
+    line-height: 1;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .topic-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .topic-meta {
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold);
+    letter-spacing: .05em;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 2.5rem 0 .8rem;
+  }
+  h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent3);
+    margin: 1.8rem 0 .5rem;
+    font-style: italic;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  /* ── CALLOUT BOXES ── */
+  .box {
+    border-left: 3px solid;
+    padding: .9rem 1.2rem;
+    margin: 1.4rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: .95rem;
+  }
+  .box.theorem {
+    border-color: var(--accent2);
+    background: #eef3fb;
+  }
+  .box.theorem .box-label {
+    color: var(--accent2);
+  }
+  .box.warning {
+    border-color: var(--accent);
+    background: #faf0ee;
+  }
+  .box.warning .box-label {
+    color: var(--accent);
+  }
+  .box.insight {
+    border-color: var(--accent3);
+    background: #eef7f2;
+  }
+  .box.insight .box-label {
+    color: var(--accent3);
+  }
+  .box.formula {
+    border-color: var(--gold);
+    background: #faf5e9;
+    font-size: 1rem;
+  }
+  .box.formula .box-label {
+    color: var(--gold);
+  }
+  .box-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2rem 0 1.8rem;
+    font-size: .88rem;
+  }
+  thead tr {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  thead th {
+    padding: .55rem .85rem;
+    text-align: left;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: .82rem;
+    letter-spacing: .02em;
+  }
+  tbody tr:nth-child(even) { background: var(--cream); }
+  tbody tr:nth-child(odd)  { background: var(--paper); }
+  tbody td {
+    padding: .5rem .85rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    color: var(--accent2);
+    white-space: nowrap;
+  }
+
+  /* ── LISTS ── */
+  ul.body-list, ol.body-list {
+    margin: .6rem 0 1rem 1.6rem;
+  }
+  ul.body-list li, ol.body-list li {
+    margin-bottom: .5rem;
+    padding-left: .3rem;
+  }
+
+  /* ── DISPLAY MATH ── */
+  .display-math {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: .9rem 1.4rem;
+    margin: 1.2rem 0;
+    overflow-x: auto;
+    text-align: center;
+    font-size: 1.05rem;
+  }
+
+  /* ── PLAN TABLE ── */
+  .plan-table td:first-child {
+    color: var(--accent);
+    font-family: 'Source Serif 4', serif;
+    font-size: .85rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── TECHNIQUE TABLE ── */
+  .tech-table td:first-child {
+    color: var(--accent3);
+    font-family: 'Source Serif 4', serif;
+    font-size: .85rem;
+    font-weight: 600;
+    font-style: italic;
+    white-space: normal;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-size: .82rem;
+    color: #8a7a68;
+    font-style: italic;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    nav { position: static; height: auto; }
+    main { padding: 2rem 1.5rem 4rem; }
+    .cover h1 { font-size: 2.2rem; }
+    .topic-num { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ══════════════════════════════════════════════════
+     SIDEBAR NAV
+══════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-title">Contents</div>
+  <ul>
+    <li class="section"><a href="#intro">How to Use This Guide</a></li>
+
+    <li class="section"><a href="#t1">1 · Set Theory & Metrics</a></li>
+    <li class="sub"><a href="#t1-ops">Set Operations</a></li>
+    <li class="sub"><a href="#t1-norms">Sup vs Euclidean Norm</a></li>
+    <li class="sub"><a href="#t1-density">Density of ℚ</a></li>
+    <li class="sub"><a href="#t1-seq">Sequential Limits</a></li>
+
+    <li class="section"><a href="#t2">2 · σ-Algebras & Borel Sets</a></li>
+    <li class="sub"><a href="#t2-def">Definition & Examples</a></li>
+    <li class="sub"><a href="#t2-borel">The Borel σ-Algebra</a></li>
+    <li class="sub"><a href="#t2-alg">Algebra vs σ-Algebra</a></li>
+    <li class="sub"><a href="#t2-gen">Generated σ-Algebras</a></li>
+    <li class="sub"><a href="#t2-limsup">Limsup & Liminf</a></li>
+    <li class="sub"><a href="#t2-notcg">Not Countably Generated</a></li>
+
+    <li class="section"><a href="#t3">3 · Measures</a></li>
+    <li class="sub"><a href="#t3-def">Definition & Properties</a></li>
+    <li class="sub"><a href="#t3-ie">Inclusion-Exclusion</a></li>
+    <li class="sub"><a href="#t3-lin">Linear Combinations</a></li>
+    <li class="sub"><a href="#t3-char">Characterizations</a></li>
+    <li class="sub"><a href="#t3-df">Distribution Function</a></li>
+    <li class="sub"><a href="#t3-bc">Borel-Cantelli</a></li>
+
+    <li class="section"><a href="#t4">4 · Measurable Functions</a></li>
+    <li class="sub"><a href="#t4-def">Definition & Conditions</a></li>
+    <li class="sub"><a href="#t4-ops">Operations</a></li>
+    <li class="sub"><a href="#t4-std">Standard Machine</a></li>
+
+    <li class="section"><a href="#t5">5 · The Lebesgue Integral</a></li>
+    <li class="sub"><a href="#t5-conv">Three Convergence Theorems</a></li>
+    <li class="sub"><a href="#t5-simple">Simple Functions</a></li>
+    <li class="sub"><a href="#t5-dirac">Dirac Measure</a></li>
+    <li class="sub"><a href="#t5-fail">When Interchange Fails</a></li>
+    <li class="sub"><a href="#t5-null">Null Sets</a></li>
+    <li class="sub"><a href="#t5-l1">L¹ & Counting Measure</a></li>
+    <li class="sub"><a href="#t5-diff">Differentiation Under ∫</a></li>
+
+    <li class="section"><a href="#t6">6 · Product Measures</a></li>
+    <li class="sub"><a href="#t6-ind">Independence</a></li>
+    <li class="sub"><a href="#t6-ft">Fubini & Tonelli</a></li>
+    <li class="sub"><a href="#t6-cav">Cavalieri's Principle</a></li>
+
+    <li class="section"><a href="#t7">7 · L<sup>p</sup> Spaces</a></li>
+    <li class="sub"><a href="#t7-jen">Jensen's Inequality</a></li>
+    <li class="sub"><a href="#t7-mar">Markov's Inequality</a></li>
+    <li class="sub"><a href="#t7-hol">Hölder & Sub-Additivity</a></li>
+
+    <li class="section"><a href="#t8">8 · Hilbert Spaces</a></li>
+    <li class="sub"><a href="#t8-ip">Inner Products & CS</a></li>
+    <li class="sub"><a href="#t8-orth">Orthogonal Complements</a></li>
+    <li class="sub"><a href="#t8-ops">Bounded Operators</a></li>
+    <li class="sub"><a href="#t8-onb">Orthonormal Bases</a></li>
+
+    <li class="section"><a href="#t9">9 · Fourier Analysis</a></li>
+    <li class="sub"><a href="#t9-cx">Complex Integration</a></li>
+    <li class="sub"><a href="#t9-gauss">The Gaussian Integral</a></li>
+    <li class="sub"><a href="#t9-ft">Fourier Transform</a></li>
+    <li class="sub"><a href="#t9-inv">Inversion Theorem</a></li>
+
+    <li class="section"><a href="#t10">10 · Radon-Nikodym</a></li>
+    <li class="section"><a href="#t11">11 · Probability</a></li>
+    <li class="section"><a href="#plan">Study Plan</a></li>
+    <li class="section"><a href="#techniques">Proof Techniques</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════════════ -->
+<main>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-tag">Comprehensive Study Guide · Autumn 2025</div>
+    <h1>Measure &amp;<br>Integration Theory</h1>
+    <p class="cover-sub">Based on Søren Kjærsgaard's exercise solutions · All 14 weeks covered</p>
+    <div class="cover-pills">
+      <span class="pill red">2–3 Month Plan</span>
+      <span class="pill blue">Topic-by-Topic</span>
+      <span class="pill green">Familiar with Basics</span>
+      <span class="pill">All Exercises Covered</span>
+      <span class="pill">MathJax Rendered</span>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <section id="intro">
+    <div class="topic-header">
+      <div class="topic-title">How to Use This Guide</div>
+    </div>
+    <p>You have a solid foundation in real analysis and familiarity with measure theory basics. This guide organises all 14 weeks of Søren's solutions into coherent topic clusters, so you study by <em>concept</em> rather than by week. Each section contains the core definitions and theorems, the key proof techniques used, the exercises that illustrate each idea, and notes on common pitfalls.</p>
+
+    <table>
+      <thead><tr><th>Timeline</th><th>Focus Area</th></tr></thead>
+      <tbody>
+        <tr><td>Month 1 (Weeks 1–5)</td><td>σ-algebras, measures, measurable functions, Lebesgue integral basics</td></tr>
+        <tr><td>Month 2 (Weeks 6–10)</td><td>Convergence theorems, product measures, Fubini/Tonelli, L<sup>p</sup> spaces</td></tr>
+        <tr><td>Month 2–3 (Weeks 11–14)</td><td>Hilbert spaces, Radon-Nikodym, Fourier transforms, probability</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ══════════ TOPIC 1 ══════════ -->
+  <section id="t1">
+    <div class="topic-header">
+      <div class="topic-num">01</div>
+      <div class="topic-title">Set Theory &amp; Metric Spaces</div>
+    </div>
+    <p class="topic-meta">Weeks 1–2 · Exercises 1.2, 1.3, Problem 1(a)–(d)</p>
+    <p>This is your warm-up territory. Even if you know real analysis, Søren's proofs here establish the notation and style used throughout the course.</p>
+
+    <h2 id="t1-ops">1.1 Essential Set Operations</h2>
+    <p>The following identities are used constantly. Know their proofs by heart.</p>
+    <table>
+      <thead><tr><th>Identity</th><th>What it says</th></tr></thead>
+      <tbody>
+        <tr><td>\(A \setminus B = A \cap B^c\)</td><td>Set difference as intersection with complement</td></tr>
+        <tr><td>\(\left(\bigcup A_i\right)^c = \bigcap A_i^c\)</td><td>De Morgan: complement of union</td></tr>
+        <tr><td>\(\left(\bigcap A_i\right)^c = \bigcup A_i^c\)</td><td>De Morgan: complement of intersection</td></tr>
+        <tr><td>\(f^{-1}(H^c) = f^{-1}(H)^c\)</td><td>Preimages commute with complements</td></tr>
+        <tr><td>\(f^{-1}\!\left(\bigcup A_i\right) = \bigcup f^{-1}(A_i)\)</td><td>Preimages commute with arbitrary unions</td></tr>
+        <tr><td>\(f^{-1}\!\left(\bigcap A_i\right) = \bigcap f^{-1}(A_i)\)</td><td>Preimages commute with arbitrary intersections</td></tr>
+      </tbody>
+    </table>
+    <div class="box insight">
+      <div class="box-label">Key Insight</div>
+      Preimages behave perfectly under <em>all</em> set operations. This is why measurability is defined via preimages — it makes the theory work cleanly.
+    </div>
+
+    <h2 id="t1-norms">1.2 The Sup-Norm vs Euclidean Norm (Exercise 1.2)</h2>
+    <p>Exercise 1.2 establishes the equivalence of \(\rho_\infty(x,y) = \max_i |x_i - y_i|\) and \(\rho_2(x,y)\). The key inequalities are:</p>
+    <div class="display-math">\[ \rho_\infty(x,y) \;\le\; \rho_2(x,y) \;\le\; \sqrt{d}\,\rho_\infty(x,y) \]</div>
+    <p><strong>Left inequality.</strong> Let \(j\) achieve the max. Then \(\rho_\infty = |x_j - y_j| \le \sqrt{\sum |x_i - y_i|^2} = \rho_2\).</p>
+    <p><strong>Right inequality.</strong> Each \((x_i-y_i)^2 \le \rho_\infty^2\), so summing \(d\) terms gives \(\rho_2 \le \sqrt{d}\,\rho_\infty\).</p>
+    <p><strong>Consequence (1.2(e)).</strong> These two metrics generate the same topology on \(\mathbb{R}^d\).</p>
+
+    <h2 id="t1-density">1.3 Density of ℚ and ℝ∖ℚ (Exercise 1.3)</h2>
+    <ul class="body-list">
+      <li><strong>ℚ is dense:</strong> For \(x < y\), find \(n\) with \(n(y-x)>1\), then \(m\) with \(nx < m \le nx+1\). Then \(x < m/n < y\).</li>
+      <li><strong>ℝ∖ℚ is dense:</strong> \(\mathbb{Q}+\pi\) is dense in \(\mathbb{R}\), and rational + irrational = irrational.</li>
+      <li><strong>Extension to \(\mathbb{R}^d\):</strong> Use \(\rho_\infty\) — approximate each coordinate independently.</li>
+    </ul>
+
+    <h2 id="t1-seq">1.4 Sequential Characterisation of Limits (Exercise 1.19)</h2>
+    <div class="box theorem">
+      <div class="box-label">Theorem</div>
+      \(\lim_{t\to a} F(t) = c\) if and only if \(F(t_n)\to c\) for every sequence \(t_n \to a\) with \(t_n \ne a\).
+    </div>
+    <div class="box insight">
+      <div class="box-label">Exam Technique</div>
+      This is used in almost every continuity proof. When proving continuity of an integral (e.g. Exercise 5.23), reduce to sequences and apply Dominated Convergence.
+    </div>
+  </section>
+
+
+  <!-- ══════════ TOPIC 2 ══════════ -->
+  <section id="t2">
+    <div class="topic-header">
+      <div class="topic-num">02</div>
+      <div class="topic-title">σ-Algebras &amp; Borel Sets</div>
+    </div>
+    <p class="topic-meta">Weeks 2–4 · Exercises 1.5, 1.6, 1.7, 1.9, 1.10, 1.11, 1.19, 1.20, 1.23, 1.24</p>
+
+    <h2 id="t2-def">2.1 Definition &amp; Key Examples</h2>
+    <p>A <strong>σ-algebra</strong> \(\mathcal{E}\) on a set \(X\) satisfies: (σ1) \(X \in \mathcal{E}\); (σ2) \(A\in\mathcal{E}\Rightarrow A^c\in\mathcal{E}\); (σ3) countable unions of elements of \(\mathcal{E}\) are in \(\mathcal{E}\).</p>
+    <table>
+      <thead><tr><th>σ-algebra</th><th>Contains</th></tr></thead>
+      <tbody>
+        <tr><td>\(\mathcal{P}(X)\) — power set</td><td>Every subset. All functions are measurable.</td></tr>
+        <tr><td>\(\{\emptyset, X\}\) — trivial</td><td>Only \(\emptyset\) and \(X\). Only constant functions are measurable.</td></tr>
+        <tr><td>\(\mathcal{B}(\mathbb{R})\) — Borel</td><td>Generated by open sets; contains all "reasonable" subsets of \(\mathbb{R}\).</td></tr>
+        <tr><td>\(\{A\subseteq\mathbb{R} : A\text{ or }A^c\text{ countable}\}\)</td><td>The countable/co-countable σ-algebra. NOT countably generated (Ex 1.10).</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="t2-borel">2.2 The Borel σ-Algebra (Exercises 1.5, 1.6)</h2>
+    <p>\(\mathcal{B}(\mathbb{R})\) is generated by any of the following (know how to prove equality):</p>
+    <ul class="body-list">
+      <li>Open sets \(G \subseteq \mathbb{R}\)</li>
+      <li>Closed sets \(F \subseteq \mathbb{R}\)</li>
+      <li>Half-open intervals \((a,b]\) for \(a,b\in\mathbb{R}\)</li>
+      <li>Half-open intervals \((a,b]\) for \(a,b\in\mathbb{Q}\) (use density of ℚ)</li>
+    </ul>
+    <div class="box formula">
+      <div class="box-label">Standard Proof Technique</div>
+      To show \(\sigma(\mathcal{A}) = \sigma(\mathcal{B})\): show \(\mathcal{A}\subseteq\sigma(\mathcal{B})\) and \(\mathcal{B}\subseteq\sigma(\mathcal{A})\). By monotonicity of \(\sigma(\cdot)\), equality follows.
+    </div>
+
+    <h2 id="t2-alg">2.3 Algebra vs σ-Algebra (Exercise 1.7)</h2>
+    <p>\(\mathcal{A} = \{A\subseteq\mathbb{R} : |A|<\infty \text{ or }|A^c|<\infty\}\) is a set algebra but <em>not</em> a σ-algebra. The set \(\mathbb{N} = \bigcup_{n}\{n\}\) is a countable union of finite (hence measurable) sets, yet both \(\mathbb{N}\) and \(\mathbb{N}^c\) are infinite, so \(\mathbb{N}\notin\mathcal{A}\).</p>
+    <div class="box warning">
+      <div class="box-label">Key Distinction</div>
+      An algebra only requires <em>finite</em> union stability. A σ-algebra requires <em>countable</em> union stability. This is what makes Lebesgue integration possible — you can take limits of measurable sets.
+    </div>
+
+    <h2 id="t2-gen">2.4 Generated σ-Algebras (Exercise 1.9)</h2>
+    <p>Given \(A_1=\{1,2\}\), \(A_2=\{3,4\}\), \(A_3=\{2,3,4\}\) on \(X=\{1,2,3,4,5,\ldots\}\): identify atomic pieces \(B_1=\{1\}\), \(B_2=\{2\}\), \(B_3=\{3,4\}\). Each \(A_i\) is a union of \(B_j\)'s, and enumerating from the atoms is easier.</p>
+
+    <h2 id="t2-limsup">2.5 Limsup and Liminf of Sets (Exercise 1.11)</h2>
+    <div class="display-math">
+      \[\liminf_n A_n \;=\; \bigcup_{N=1}^{\infty}\bigcap_{n=N}^{\infty} A_n \;=\; \{x : x\in A_n \text{ for all sufficiently large }n\}\]
+      \[\limsup_n A_n \;=\; \bigcap_{N=1}^{\infty}\bigcup_{n=N}^{\infty} A_n \;=\; \{x : x\in A_n \text{ for infinitely many }n\}\]
+    </div>
+    <p>Always: \(\liminf A_n \subseteq \limsup A_n\). For increasing \((A_n)\): both equal \(\bigcup A_n\). For decreasing: both equal \(\bigcap A_n\).</p>
+
+    <h2 id="t2-notcg">2.6 The Countable/Co-countable σ-Algebra is Not Countably Generated (Ex 1.10)</h2>
+    <p>Let \(\mathcal{E} = \{A\subseteq\mathbb{R}: A\text{ or }A^c\text{ countable}\}\). Suppose for contradiction \(\mathcal{E}=\sigma(\{A'_n\})\) with each \(A'_n\) countable. For any \(x\) outside the union of all \(A'_n\), the singleton \(\{x\}\in\mathcal{E}\) cannot be in \(\sigma(\{A'_n\})\) — a contradiction.</p>
+    <div class="box insight">
+      <div class="box-label">The Moral</div>
+      \(\mathcal{B}(\mathbb{R})\) is countably generated (by \((a,b]\) with \(a,b\in\mathbb{Q}\)), but \(\mathcal{E}\) is not — yet \(\mathcal{E}\subseteq\mathcal{B}(\mathbb{R})\). Countable generation does NOT pass to sub-σ-algebras.
+    </div>
+  </section>
+
+
+  <!-- ══════════ TOPIC 3 ══════════ -->
+  <section id="t3">
+    <div class="topic-header">
+      <div class="topic-num">03</div>
+      <div class="topic-title">Measures</div>
+    </div>
+    <p class="topic-meta">Weeks 2–4 · Exercises 1.12, 1.15, 1.17, 1.18, 1.20, 1.23, 1.24</p>
+
+    <h2 id="t3-def">3.1 Definition and Basic Properties</h2>
+    <p>A measure \(\mu\) on \((X,\mathcal{E})\) satisfies (m1) \(\mu(\emptyset)=0\) and (m2) countable additivity: \(\mu\!\left(\bigsqcup_n A_n\right)=\sum_n\mu(A_n)\) for pairwise disjoint \(A_n\).</p>
+    <table>
+      <thead><tr><th>Property</th><th>Statement</th></tr></thead>
+      <tbody>
+        <tr><td>Finite additivity</td><td>\(\mu(A\cup B)=\mu(A)+\mu(B)\) for \(A,B\) disjoint</td></tr>
+        <tr><td>Monotonicity</td><td>\(A\subseteq B \Rightarrow \mu(A)\le\mu(B)\)</td></tr>
+        <tr><td>Excision</td><td>\(A\subseteq B,\;\mu(A)<\infty \Rightarrow \mu(B\setminus A)=\mu(B)-\mu(A)\)</td></tr>
+        <tr><td>Subadditivity</td><td>\(\mu\!\left(\bigcup A_n\right)\le\sum\mu(A_n)\)</td></tr>
+        <tr><td>Continuity from below</td><td>\(A_n\uparrow A \Rightarrow \mu(A_n)\to\mu(A)\)</td></tr>
+        <tr><td>Continuity from above</td><td>\(A_n\downarrow A,\;\mu(A_1)<\infty \Rightarrow \mu(A_n)\to\mu(A)\)</td></tr>
+      </tbody>
+    </table>
+    <div class="box warning">
+      <div class="box-label">Critical</div>
+      Continuity from above <strong>requires</strong> \(\mu(A_1)<\infty\). Without this the theorem fails. Counterexample: \(A_n=(n,\infty)\) with Lebesgue measure — then \(\bigcap A_n=\emptyset\) but \(\mu(A_n)=\infty\) for all \(n\).
+    </div>
+
+    <h2 id="t3-ie">3.2 Inclusion-Exclusion (Exercise 1.12)</h2>
+    <div class="display-math">\[ \mu(A\cup B) = \mu(A) + \mu(B) - \mu(A\cap B) \]</div>
+    <p>Write \(A\cup B = A\sqcup(B\setminus(A\cap B))\), apply finite additivity, then excision (requires \(\mu(A\cap B)<\infty\)).</p>
+
+    <h2 id="t3-lin">3.3 Linear Combinations of Measures (Exercise 1.15)</h2>
+    <p>If \(\mu_1,\mu_2,\ldots\) are measures and \(a_n\ge 0\), then \(\mu=\sum_n a_n\mu_n\) is also a measure. Proof for countable additivity: interchange the two sums using nonnegativity (Tonelli for series).</p>
+
+    <h2 id="t3-char">3.4 Alternative Characterisations (Exercise 1.23)</h2>
+    <p>A set function with \(\mu(\emptyset)=0\) is a measure iff it is finitely additive and continuous from below. For finite measures, continuity from below can be replaced by continuity from above.</p>
+
+    <h2 id="t3-df">3.5 The Distribution Function (Exercise 1.24)</h2>
+    <p>For a finite measure \(\mu\) on \((\mathbb{R},\mathcal{B}(\mathbb{R}))\), define \(F_\mu(x)=\mu\!\left((-\infty,x]\right)\). This is increasing, right-continuous (use continuity from above on \((-\infty,x+\tfrac{1}{n}]\downarrow(-\infty,x]\)), and continuous at \(x\) iff \(\mu(\{x\})=0\).</p>
+
+    <h2 id="t3-bc">3.6 The Borel-Cantelli Lemma (Exercise 1.18)</h2>
+    <div class="box theorem">
+      <div class="box-label">Borel-Cantelli Lemma</div>
+      If \(\displaystyle\sum_{n=1}^{\infty}\mu(A_n)<\infty\), then \(\mu\!\left(\limsup_n A_n\right)=0\).
+    </div>
+    <p><strong>Proof.</strong> The tail \(\sum_{k=n}^{\infty}\mu(A_k)\to 0\). By subadditivity, \(\mu\!\left(\bigcup_{k\ge n}A_k\right)\le\sum_{k\ge n}\mu(A_k)\to 0\). Since \(\limsup A_n=\bigcap_n\bigcup_{k\ge n}A_k\) is an intersection of decreasing sets, \(\mu(\limsup A_n)\le\mu\!\left(\bigcup_{k\ge n}A_k\right)\to 0\) for all \(n\).</p>
+  </section>
+
+
+  <!-- ══════════ TOPIC 4 ══════════ -->
+  <section id="t4">
+    <div class="topic-header">
+      <div class="topic-num">04</div>
+      <div class="topic-title">Measurable Functions</div>
+    </div>
+    <p class="topic-meta">Weeks 4–5 · Exercises 4.4, 4.5, 4.8, 4.9, 4.10, 4.13, 4.16, 4.17</p>
+
+    <h2 id="t4-def">4.1 Definition &amp; Equivalent Conditions</h2>
+    <p>\(f:(X,\mathcal{E})\to(\mathbb{R},\mathcal{B}(\mathbb{R}))\) is measurable iff \(f^{-1}(B)\in\mathcal{E}\) for all \(B\in\mathcal{B}(\mathbb{R})\). It suffices to check generators. Equivalent conditions:</p>
+    <ol class="body-list">
+      <li>\(\{f > t\}\in\mathcal{E}\) for all \(t\in\mathbb{R}\)</li>
+      <li>\(\{f \ge t\}\in\mathcal{E}\) for all \(t\in\mathbb{R}\)</li>
+      <li>\(\{f < t\}\in\mathcal{E}\) for all \(t\in\mathbb{R}\)</li>
+      <li>\(\{f \le t\}\in\mathcal{E}\) for all \(t\in\mathbb{R}\)</li>
+    </ol>
+
+    <h2 id="t4-ops">4.2 Compositions and Operations</h2>
+    <table>
+      <thead><tr><th>Operation</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>\(f\) meas., \(g\) meas.</td><td>\(g\circ f\) measurable</td></tr>
+        <tr><td>\(f, g\) real meas.</td><td>\(f+g,\; f-g,\; fg,\; |f|\) all measurable</td></tr>
+        <tr><td>\(f_n\) meas. for all \(n\)</td><td>\(\sup f_n,\;\inf f_n,\;\limsup f_n,\;\liminf f_n\) measurable</td></tr>
+        <tr><td>\(f_n\to f\) pointwise</td><td>\(f\) measurable (Cor 4.3.7)</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="t4-std">4.3 The Standard Machine (Exercise 4.16)</h2>
+    <div class="box theorem">
+      <div class="box-label">Standard Machine</div>
+      To prove a property \(P\) holds for all \(f\in\mathcal{M}(\mathcal{E})^+\), it suffices to show:
+      <ol class="body-list" style="margin-top:.5rem">
+        <li>\(P\) holds for \(\mathbf{1}_A\) for all \(A\in\mathcal{E}\)</li>
+        <li>\(P\) is preserved under nonneg. linear combinations</li>
+        <li>\(P\) is preserved under increasing pointwise limits</li>
+      </ol>
+      Then \(P\) holds for all \(f\in\mathcal{M}(\mathcal{E})^+\) by the simple-function approximation theorem.
+    </div>
+    <div class="box insight">
+      <div class="box-label">Key Use</div>
+      Exercise 4.17 applies this to show \(f\circ\phi\) is measurable: set \(\mathcal{V}=\{f\circ\phi : f\in\mathcal{M}(\mathcal{F})^+\}\) and verify (i)–(iii) using \(\mathbf{1}_B\circ\phi = \mathbf{1}_{\phi^{-1}(B)}\).
+    </div>
+  </section>
+
+
+  <!-- ══════════ TOPIC 5 ══════════ -->
+  <section id="t5">
+    <div class="topic-header">
+      <div class="topic-num">05</div>
+      <div class="topic-title">The Lebesgue Integral</div>
+    </div>
+    <p class="topic-meta">Weeks 5–8 · Exercises 5.2, 5.3, 5.5, 5.9, 5.11, 5.12, 5.14, 5.16, 5.17, 5.19, 5.23, 5.25, 5.26</p>
+
+    <h2 id="t5-conv">5.1 The Three Convergence Theorems</h2>
+    <div class="box theorem">
+      <div class="box-label">Monotone Convergence (MCT)</div>
+      If \(0\le f_n\uparrow f\) pointwise, then \(\displaystyle\int f_n\,d\mu\to\int f\,d\mu\). (The limit may be \(+\infty\).)
+    </div>
+    <div class="box formula">
+      <div class="box-label">Fatou's Lemma</div>
+      If \(f_n\ge 0\), then \(\displaystyle\int\liminf_n f_n\,d\mu \;\le\; \liminf_n\int f_n\,d\mu\).
+    </div>
+    <div class="box insight">
+      <div class="box-label">Dominated Convergence (DCT)</div>
+      If \(f_n\to f\) pointwise, \(|f_n|\le g\) for all \(n\), and \(\int g\,d\mu<\infty\), then \(\displaystyle\int f_n\,d\mu\to\int f\,d\mu\).
+    </div>
+    <table>
+      <thead><tr><th>Theorem</th><th>When to use</th></tr></thead>
+      <tbody>
+        <tr><td>MCT</td><td>Functions nonneg. and increasing. Limit can be infinite.</td></tr>
+        <tr><td>DCT</td><td>Functions not necessarily monotone. Need integrable dominant. Limit must be finite a.e.</td></tr>
+        <tr><td>Fatou</td><td>Functions nonneg. You only get an inequality, not equality.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="t5-simple">5.2 Integration of Simple Functions (Exercise 5.2)</h2>
+    <p>For \(s = \sum_{j=1}^n a_j\mathbf{1}_{A_j}\) in standard form (disjoint \(A_j\)):</p>
+    <div class="display-math">\[ \int s\,d\mu = \sum_{j=1}^n a_j\,\mu(A_j) \]</div>
+    <p>Example (5.2(c)): \(s(x)=\sum_{n=1}^\infty \frac{1}{n^2}\mathbf{1}_{(n-1,n]}\). Then \(\int s\,d\lambda = \sum_{n=1}^\infty \frac{1}{n^2}=\frac{\pi^2}{6}\).</p>
+
+    <h2 id="t5-dirac">5.3 The Dirac Measure (Exercise 5.3)</h2>
+    <div class="display-math">\[ \int f\,d\delta_a = f(a) \quad\text{for all }f\in\mathcal{M}(\mathcal{P}(X))^+ \]</div>
+    <p>Proof via Standard Machine: \(\int\mathbf{1}_A\,d\delta_a=\delta_a(A)=\mathbf{1}_A(a)\). Extend by linearity and MCT.</p>
+
+    <h2 id="t5-fail">5.4 When Interchange Fails (Exercise 5.14)</h2>
+    <p>Let \(f_n = n\cdot\mathbf{1}_{(0,1/n]}\). Then \(f_n\to 0\) pointwise, but \(\int f_n\,d\lambda = 1\) for all \(n\). So \(\int\lim f_n = 0\ne 1 = \lim\int f_n\).</p>
+    <ul class="body-list">
+      <li><strong>DCT fails:</strong> Any dominant \(g\ge f_n\) satisfies \(\int g\ge\sum 1/n = \infty\).</li>
+      <li><strong>MCT fails:</strong> The sequence is not increasing — \(f_1(2/3)=1>0=f_2(2/3)\).</li>
+    </ul>
+    <div class="box warning">
+      <div class="box-label">Lesson</div>
+      Always verify the hypotheses. Without an integrable dominant (DCT) or monotonicity (MCT), interchange can fail.
+    </div>
+
+    <h2 id="t5-null">5.5 Null Sets and A.E. Properties (Exercise 5.9)</h2>
+    <ul class="body-list">
+      <li>Every countable set is a Lebesgue null set.</li>
+      <li>If \(N\) is null, then \(\mathbb{R}\setminus N\) is dense in \(\mathbb{R}\).</li>
+      <li>If \(f,g\) continuous and \(f=g\) \(\lambda\)-a.e., then \(f=g\) everywhere (by density).</li>
+    </ul>
+
+    <h2 id="t5-l1">5.6 L¹ and the Counting Measure (Exercise 5.12)</h2>
+    <p>For the counting measure \(\tau\) on \(\mathbb{N}\): \(\int f\,d\tau = \sum_{n=1}^\infty f(n)\). Therefore \(L^1(\tau) = \{\text{absolutely convergent sequences}\}\). The Lebesgue integral does NOT see conditional convergence — it requires absolute convergence.</p>
+
+    <h2 id="t5-diff">5.7 Differentiation Under the Integral (Exercises 5.23, 5.25)</h2>
+    <div class="box theorem">
+      <div class="box-label">Continuity (Ex 5.23)</div>
+      Let \(F(t)=\int_X f(x,t)\,\mu(dx)\). If each \(f(x,\cdot)\) is continuous at \(t_0\) and \(|f(x,t)|\le g(x)\) for all \(t\) with \(g\) integrable, then \(F\) is continuous at \(t_0\).
+    </div>
+    <div class="box theorem">
+      <div class="box-label">Differentiability (Ex 5.25)</div>
+      Under differentiability of \(f(x,\cdot)\) and integrability of \(\partial_t f\):
+      \[F'(t) = \int_X \frac{\partial}{\partial t}f(x,t)\,\mu(dx)\]
+      Proof: bound difference quotients by MVT, then apply DCT.
+    </div>
+  </section>
+
+
+  <!-- ══════════ TOPIC 6 ══════════ -->
+  <section id="t6">
+    <div class="topic-header">
+      <div class="topic-num">06</div>
+      <div class="topic-title">Product Measures &amp; Independence</div>
+    </div>
+    <p class="topic-meta">Weeks 7–8 · Exercises 2.1, 2.2, 6.1, 6.4, 6.5, 6.7, 6.8</p>
+
+    <h2 id="t6-ind">6.1 Independence (Exercises 2.1, 2.2)</h2>
+    <p>Events \(A\) and \(B\) are independent if \(\mu(A\cap B)=\mu(A)\cdot\mu(B)\). The system of sets independent of a class \(\mathcal{J}\) (denoted \(\mathcal{U}_\mathcal{J}\)) forms a Dynkin system but is generally not a σ-algebra (Ex 2.1(b): two sets can each be independent of \(B\) without their intersection being so).</p>
+
+    <h2 id="t6-ft">6.2 Fubini and Tonelli</h2>
+    <div class="box theorem">
+      <div class="box-label">Tonelli (nonneg. functions, σ-finite measures)</div>
+      For \(f\in\mathcal{M}(\mathcal{E}\otimes\mathcal{F})^+\):
+      \[\int\!\!\int f\,d(\mu\otimes\nu) = \int\!\left[\int f(x,y)\,\nu(dy)\right]\mu(dx) = \int\!\left[\int f(x,y)\,\mu(dx)\right]\nu(dy)\]
+    </div>
+    <div class="box theorem">
+      <div class="box-label">Fubini (integrable functions)</div>
+      Same conclusion for \(f\in L^1(\mu\otimes\nu)\).
+    </div>
+    <div class="box warning">
+      <div class="box-label">Warning</div>
+      Exercise 6.7 shows Tonelli <strong>fails</strong> without σ-finiteness: with \(\tau=\) counting measure on \(\mathbb{R}\), swapping integration order for \(\mathbf{1}_\Delta\) (the diagonal) gives \(0\ne\infty\).
+    </div>
+
+    <h2 id="t6-cav">6.3 Cavalieri's Principle (Exercises 6.1, 6.5)</h2>
+    <div class="display-math">\[ \lambda_2(S) = \int_{\mathbb{R}} \lambda_1(S_x)\,\lambda_1(dx), \quad S_x=\{y:(x,y)\in S\} \]</div>
+    <p>Example (6.1): Unit disk \(D\) has slice \(D_x=[-\sqrt{1-x^2},\sqrt{1-x^2}]\) of length \(2\sqrt{1-x^2}\). So \(\lambda_2(D)=\int_{-1}^1 2\sqrt{1-x^2}\,dx=\pi\).</p>
+  </section>
+
+
+  <!-- ══════════ TOPIC 7 ══════════ -->
+  <section id="t7">
+    <div class="topic-header">
+      <div class="topic-num">07</div>
+      <div class="topic-title">L<sup>p</sup> Spaces</div>
+    </div>
+    <p class="topic-meta">Weeks 9–10 · Exercises 7.2, 7.3, 7.5, 7.6, 7.10, 7.11, 7.16, 7.18</p>
+
+    <h2 id="t7-jen">7.1 Jensen's Inequality</h2>
+    <div class="box theorem">
+      <div class="box-label">Jensen</div>
+      If \(\mu(X)=1\), \(f\in L^1(\mu)\), and \(\varphi\) is convex on an interval containing the range of \(f\), then:
+      \[\varphi\!\left(\int f\,d\mu\right) \;\le\; \int \varphi\circ f\,d\mu\]
+    </div>
+    <p>Exercise 7.5 derives the weighted power mean inequality: for \(\ell_i>0\) and convex \(\varphi\),</p>
+    <div class="display-math">\[ \varphi\!\left(\frac{\sum\ell_i x_i}{\sum\ell_i}\right) \;\le\; \frac{\sum\ell_i\,\varphi(x_i)}{\sum\ell_i} \]</div>
+    <p>Proof: define \(\mu=\sum\frac{\ell_j}{\sum\ell_i}\delta_{x_j}\), a probability measure. Apply Jensen.</p>
+
+    <h2 id="t7-mar">7.2 Markov's Inequality (Exercise 7.3)</h2>
+    <div class="box formula">
+      <div class="box-label">Markov</div>
+      For \(\psi\) increasing with \(\psi(t)>0\):
+      \[\mu(\{|f|\ge t\}) \;\le\; \frac{1}{\psi(t)}\int\psi(|f|)\,d\mu\]
+    </div>
+    <p>Proof: on \(\{|f|\ge t\}\), we have \(1\le\psi(|f|)/\psi(t)\). Integrate both sides. Special case \(\psi(t)=t^p\) gives Chebyshev-type inequalities.</p>
+
+    <h2 id="t7-hol">7.3 The Sub-Additivity Inequality for \(0 < p \le 1\) (Exercise 7.11)</h2>
+    <p>For \(0<p\le 1\) and \(a,b\ge 0\): \((a+b)^p\le a^p+b^p\). Proof via MVT applied to \(x\mapsto x^p\) on \([b,a+b]\).</p>
+    <p>This gives a metric on \(L^p\) for \(0<p<1\): \(\rho_p(f,g)=\int|f-g|^p\,d\mu\) satisfies the triangle inequality (but is not a norm since homogeneity fails).</p>
+  </section>
+
+
+  <!-- ══════════ TOPIC 8 ══════════ -->
+  <section id="t8">
+    <div class="topic-header">
+      <div class="topic-num">08</div>
+      <div class="topic-title">Hilbert Spaces</div>
+    </div>
+    <p class="topic-meta">Weeks 9 &amp; 11–12 · Exercises 9.2, 9.3, 9.6, 9.8, 9.13, 9.19</p>
+
+    <h2 id="t8-ip">8.1 Inner Products and Cauchy-Schwarz</h2>
+    <div class="box theorem">
+      <div class="box-label">Cauchy-Schwarz</div>
+      \(|\langle u,v\rangle| \le \|u\|\cdot\|v\|\). Equality iff \(u\) and \(v\) are linearly dependent.
+    </div>
+    <p>Exercise 9.2: \(\|u\| = \sup\{|\langle u,v\rangle| : \|v\|\le 1\}\). The sup is achieved at \(v=u/\|u\|\).</p>
+
+    <h2 id="t8-orth">8.2 Orthogonal Complements (Exercise 9.6)</h2>
+    <p>For a subspace \(V\subseteq H\), \(V^\perp=\{u\in H:\langle u,v\rangle=0\;\forall v\in V\}\).</p>
+    <div class="box theorem">
+      <div class="box-label">Double Complement</div>
+      \((V^\perp)^\perp = \overline{V}\) (the closure of \(V\)). For closed subspaces: \((U^\perp)^\perp = U\).
+    </div>
+
+    <h2 id="t8-ops">8.3 Bounded Linear Operators (Exercise 9.19)</h2>
+    <p>\(T:V\to V\) is bounded iff any of: \(T\) is continuous; \(\sup_{\|x\|\le 1}\|Tx\|<\infty\); \(\|Tx\|\le K\|x\|\) for some \(K\). The operator norm \(\|T\|_{\mathrm{op}}=\sup_{\|x\|\le 1}\|Tx\|\) satisfies \(\|S\circ T\|_{\mathrm{op}}\le\|S\|_{\mathrm{op}}\|T\|_{\mathrm{op}}\).</p>
+
+    <h2 id="t8-onb">8.4 Orthonormal Bases and Parseval (Exercise 9.8)</h2>
+    <div class="box theorem">
+      <div class="box-label">Parseval's Formula</div>
+      If \((e_n)\) is an orthonormal basis of \(H\):
+      \[\|x\|^2 = \sum_n |\langle x,e_n\rangle|^2, \qquad \langle x,y\rangle = \sum_n\langle x,e_n\rangle\overline{\langle y,e_n\rangle}\]
+    </div>
+  </section>
+
+
+  <!-- ══════════ TOPIC 9 ══════════ -->
+  <section id="t9">
+    <div class="topic-header">
+      <div class="topic-num">09</div>
+      <div class="topic-title">Complex Integration &amp; Fourier Analysis</div>
+    </div>
+    <p class="topic-meta">Weeks 10–14 · Exercises 8.1, 8.2, 8.3, 11.4, 11.5, 12.2, 12.4, 12.5, 12.7</p>
+
+    <h2 id="t9-cx">9.1 Complex-Valued Integration (Exercises 8.1, 8.2)</h2>
+    <p>For \(f=g+ih\), integrate real and imaginary parts separately. Key computation (Ex 8.2): for \(z\in\mathbb{C}\) with \(\mathrm{Re}(z)<0\),</p>
+    <div class="display-math">\[ \int_0^\infty e^{xz}\,d\lambda(x) = -\frac{1}{z} \]</div>
+
+    <h2 id="t9-gauss">9.2 The Gaussian Integral (Exercise 11.4)</h2>
+    <div class="box formula">
+      <div class="box-label">The Gaussian Integral</div>
+      \[\int_{\mathbb{R}} e^{-x^2}\,d\lambda = \sqrt{\pi}, \qquad \int_{\mathbb{R}} e^{-x^2/2}\,d\lambda = \sqrt{2\pi}\]
+    </div>
+    <p><strong>Proof by polar coordinates.</strong></p>
+    <ol class="body-list">
+      <li>Write \(I^2 = \int_{\mathbb{R}^2} e^{-(x^2+y^2)}\,d\lambda_2\) (Tonelli).</li>
+      <li>Use the co-area formula; in polar coordinates with density \(f(r)=2\pi r\) on \((0,\infty)\):</li>
+      <li>\(I^2 = \int_0^\infty 2\pi r\, e^{-r^2}\,dr = \pi\) (substitution \(u=r^2\)).</li>
+      <li>Hence \(I=\sqrt{\pi}\).</li>
+    </ol>
+    <p>Exercise 11.5 proves the Fourier transform of the Gaussian by showing \(F(t)=\int\cos(tx)e^{-x^2/2}\,d\lambda\) satisfies \(F'(t)=-tF(t)\) with \(F(0)=\sqrt{2\pi}\), giving \(F(t)=\sqrt{2\pi}\,e^{-t^2/2}\).</p>
+
+    <h2 id="t9-ft">9.3 The Fourier Transform (Exercises 12.1–12.5)</h2>
+    <div class="box formula">
+      <div class="box-label">Definition</div>
+      For \(f\in L^1(\lambda)\):
+      \[\hat{f}(t) = \frac{1}{\sqrt{2\pi}}\int_{\mathbb{R}} e^{-itx}f(x)\,d\lambda(x)\]
+    </div>
+    <p>Key properties:</p>
+    <ul class="body-list">
+      <li>\(\|\hat{f}\|_\infty \le \frac{1}{\sqrt{2\pi}}\|f\|_1\) and \(\hat{f}\) is continuous.</li>
+      <li><strong>Differentiation:</strong> If \(f'\in L^1\), then \(\widehat{f'}(t) = it\,\hat{f}(t)\).</li>
+      <li><strong>Convolution:</strong> \(\widehat{f*g} = \sqrt{2\pi}\,\hat{f}\cdot\hat{g}\).</li>
+    </ul>
+    <p>Exercise 12.4 — Fourier transform of the Poisson kernel \(H_\sigma(x)=e^{-\sigma|x|}\):</p>
+    <div class="display-math">\[ \hat{H}_\sigma(t) = \sqrt{\frac{2}{\pi}}\cdot\frac{\sigma}{\sigma^2+t^2} \]</div>
+
+    <h2 id="t9-inv">9.4 The Inversion Theorem and Convolution Equations (Exercises 12.5, 12.7)</h2>
+    <div class="box theorem">
+      <div class="box-label">Inversion Theorem (12.4.2)</div>
+      If \(f,\hat{f}\in L^1\), then for \(\lambda\)-a.e. \(x\):
+      \[f(x) = \frac{1}{\sqrt{2\pi}}\int_{\mathbb{R}} e^{itx}\hat{f}(t)\,d\lambda(t)\]
+    </div>
+    <p>Exercise 12.5: \(C^2_c\) functions satisfy \(\hat{f}\in L^1\) via \(|t^2\hat{f}(t)|\le\|f''\|_1\), so \(1/t^2\) integrability on \(|t|>1\) gives \(\hat{f}\in L^1\), and the inversion theorem applies pointwise.</p>
+    <p>Exercise 12.7: Solve \(f-f''=u\) via convolution with the Green's function \(G=\tfrac{1}{2}e^{-|x|}\). Solution: \(f=\tfrac{1}{2}(H_1*u)\).</p>
+  </section>
+
+
+  <!-- ══════════ TOPIC 10 ══════════ -->
+  <section id="t10">
+    <div class="topic-header">
+      <div class="topic-num">10</div>
+      <div class="topic-title">Radon-Nikodym &amp; Change of Variables</div>
+    </div>
+    <p class="topic-meta">Weeks 11–12 · Exercises 10.5, 11.4</p>
+
+    <div class="box theorem">
+      <div class="box-label">Radon-Nikodym Theorem</div>
+      If \(\nu\ll\mu\) (ν is absolutely continuous w.r.t. μ), then there exists measurable \(f\ge 0\) with
+      \[\nu(A)=\int_A f\,d\mu \quad\text{for all }A\in\mathcal{E}\]
+      We write \(f=\frac{d\nu}{d\mu}\) (the Radon-Nikodym derivative).
+    </div>
+    <p>Exercise 10.5 proves the <strong>chain rule</strong>: if \(\nu\ll\mu\ll\omega\) with \(f=\frac{d\nu}{d\mu}\) and \(g=\frac{d\mu}{d\omega}\), then \(\frac{d\nu}{d\omega}=fg\).</p>
+    <p>Proof: For any \(A\in\mathcal{E}\), \(\nu(A)=\int f\cdot\mathbf{1}_A\,d\mu=\int fg\cdot\mathbf{1}_A\,d\omega\) by the change-of-measure formula (Prop 10.1.4).</p>
+
+    <h2>Change of Variables (Exercise 11.4)</h2>
+    <p>For a linear map \(\phi(x)=Ax+b\) with \(A\) invertible:</p>
+    <div class="display-math">\[ \int_{\mathbb{R}^d} f(Ax+b)\,d\lambda(x) = |\det A|^{-1}\int_{\mathbb{R}^d} f(y)\,d\lambda(y) \]</div>
+    <p>Exercise 11.4(d): translate \(x\mapsto x-\xi\) and scale \(x\mapsto x/\sqrt{2\sigma^2}\) to derive \(\int e^{-(x-\xi)^2/(2\sigma^2)}\,d\lambda=\sqrt{2\pi\sigma^2}\).</p>
+  </section>
+
+
+  <!-- ══════════ TOPIC 11 ══════════ -->
+  <section id="t11">
+    <div class="topic-header">
+      <div class="topic-num">11</div>
+      <div class="topic-title">Probability Theory</div>
+    </div>
+    <p class="topic-meta">Weeks 12–14 · Exercises 9.13, 13.3, 13.5</p>
+
+    <h2>11.1 Zero-One Laws (Exercise 13.3)</h2>
+    <p>If \(P(X\in B)\in\{0,1\}\) for all \(B\in\mathcal{B}(\mathbb{R})\), then \(X\) is almost surely constant: \(\exists\, c\in\mathbb{R}\) with \(P(X=c)=1\).</p>
+    <p>Proof: \(F_X(t)=P(X\le t)\) takes only values \(0\) and \(1\). Since \(F_X(-\infty)=0\) and \(F_X(+\infty)=1\), there must be a jump at some \(c\). By right-continuity, \(F_X(c)=1\) and \(F_X(t)=0\) for \(t<c\). So \(P_X=\delta_c\) by uniqueness (Thm 2.2.1).</p>
+
+    <h2>11.2 Constructing Independent Random Variables (Exercise 13.5)</h2>
+    <p>Given probability measures \(\mu_1,\ldots,\mu_n\) on \((\mathbb{R},\mathcal{B}(\mathbb{R}))\), construct a probability space with independent \(X_1,\ldots,X_n\) satisfying \(P_{X_j}=\mu_j\):</p>
+    <ul class="body-list">
+      <li>Take \(\Omega=\mathbb{R}^n\), \(\mathcal{F}=\mathcal{B}(\mathbb{R}^n)\), \(P=\mu_1\otimes\cdots\otimes\mu_n\), \(X_j=p_j\) (projection).</li>
+      <li>Independence: \(P(X_1\in A_1,\ldots,X_n\in A_n)=P(A_1\times\cdots\times A_n)=\prod\mu_j(A_j)=\prod P(X_j\in A_j)\).</li>
+    </ul>
+  </section>
+
+
+  <!-- ══════════ STUDY PLAN ══════════ -->
+  <section id="plan">
+    <div class="topic-header">
+      <div class="topic-title">Month-by-Month Study Plan</div>
+    </div>
+
+    <h2>Month 1: Foundations (Weeks 1–5 material)</h2>
+    <table class="plan-table">
+      <thead><tr><th>Week</th><th>Goals</th></tr></thead>
+      <tbody>
+        <tr><td>Week 1</td><td>Set operations (Topic 1): Memorise preimage rules, De Morgan, density arguments. Do Problem 1 and Ex 1.3 from memory.</td></tr>
+        <tr><td>Week 2</td><td>σ-Algebras (Topic 2): Practice proving \(\sigma(\mathcal{A})=\sigma(\mathcal{B})\). Do Ex 1.5, 1.6, 1.7 from memory.</td></tr>
+        <tr><td>Week 3</td><td>Measures (Topic 3, part 1): All 6 properties of Prop 1.3.4. Do Ex 1.12, 1.17, 1.18 from memory.</td></tr>
+        <tr><td>Week 4</td><td>Measures (cont.) + Measurability (Topic 4): Distribution functions, limsup/liminf of sets. Do Ex 1.20, 1.24, 4.4, 4.8.</td></tr>
+        <tr><td>Week 5</td><td>Standard Machine (Topic 4): Do Ex 4.16 and 4.17 until you can do them without notes. This technique recurs everywhere.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Month 2: Integration and L<sup>p</sup> (Weeks 6–10)</h2>
+    <table class="plan-table">
+      <thead><tr><th>Week</th><th>Goals</th></tr></thead>
+      <tbody>
+        <tr><td>Week 6</td><td>Lebesgue integral basics: Three convergence theorems, simple functions, Dirac measure. Do Ex 5.2, 5.3 from memory.</td></tr>
+        <tr><td>Week 7</td><td>Advanced integration: When interchange fails (Ex 5.14), null sets (Ex 5.9), counting measure (Ex 5.12).</td></tr>
+        <tr><td>Week 8</td><td>Differentiation under integral: Do Ex 5.23 and 5.25 completely. These reappear in Fourier analysis.</td></tr>
+        <tr><td>Week 9</td><td>Product measures: Fubini, Tonelli, Cavalieri. Do Ex 6.1, 6.4, 6.5, 6.8.</td></tr>
+        <tr><td>Week 10</td><td>L<sup>p</sup> spaces: Jensen, Markov, sub-additivity inequality, L<sup>∞</sup> vs L<sup>r</sup>. Do Ex 7.3, 7.5, 7.6, 7.10, 7.11.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Month 3: Advanced Topics (Weeks 11–14)</h2>
+    <table class="plan-table">
+      <thead><tr><th>Week</th><th>Goals</th></tr></thead>
+      <tbody>
+        <tr><td>Week 11</td><td>Hilbert spaces: Inner products, Cauchy-Schwarz, projection theorem, orthonormal bases, Parseval. Do Ex 9.2, 9.3, 9.6.</td></tr>
+        <tr><td>Week 12</td><td>Operators + Radon-Nikodym: Bounded operators, operator norm, chain rule. Do Ex 9.19, 10.5.</td></tr>
+        <tr><td>Week 13</td><td>Gaussian + Fourier intro: Gaussian integral, Fourier transform of the Gaussian. Do Ex 11.4, 11.5.</td></tr>
+        <tr><td>Week 14</td><td>Fourier analysis: Poisson kernel, inversion theorem, convolution ODE. Do Ex 12.4, 12.5, 12.7.</td></tr>
+        <tr><td>Final</td><td>Probability (Topic 11) + comprehensive review. Do Ex 13.3, 13.5. Revisit weak areas from months 1–2.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ══════════ TECHNIQUES ══════════ -->
+  <section id="techniques">
+    <div class="topic-header">
+      <div class="topic-title">Core Proof Techniques</div>
+    </div>
+    <p>These techniques recur regardless of which exercises appear. Master all of them.</p>
+
+    <table class="tech-table">
+      <thead><tr><th>Technique</th><th>When to use it</th></tr></thead>
+      <tbody>
+        <tr><td>Standard Machine (Ex 4.16)</td><td>Proving a property for all measurable functions: indicators → simple functions (MCT) → all functions.</td></tr>
+        <tr><td>Sequential continuity (Ex 1.19)</td><td>Proving continuity of an integral: convert to sequences, apply DCT.</td></tr>
+        <tr><td>\(\sigma(\mathcal{A})=\sigma(\mathcal{B})\) via mutual inclusion</td><td>Proving two σ-algebras are equal: show each generator is in the other's σ-algebra.</td></tr>
+        <tr><td>Dynkin / π-λ theorem</td><td>Proving two measures agree: verify on a π-system (intersection-stable) that generates the σ-algebra.</td></tr>
+        <tr><td>MVT for difference quotients</td><td>Differentiation under integral (Ex 5.25): bound \(|(f(x,t)-f(x,s))/(t-s)|\) by \(|\partial_t f|\), then DCT.</td></tr>
+        <tr><td>Continuity from below/above</td><td>Taking limits of measures of monotone sequences of sets.</td></tr>
+        <tr><td>Borel-Cantelli via tail sums</td><td>Proving almost-sure events from a convergent series of probabilities.</td></tr>
+        <tr><td>Fubini/Tonelli for double integrals</td><td>Evaluating double integrals by iteration. Always check σ-finiteness for Tonelli!</td></tr>
+        <tr><td>ODE uniqueness</td><td>Ex 11.5: \(F'=-tF\) with \(F(0)\) known uniquely determines \(F(t)=F(0)e^{-t^2/2}\).</td></tr>
+        <tr><td>Preimage properties for measurability</td><td>Showing a new function is measurable: write its preimage as set operations on known measurable sets.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box warning" style="margin-top:2rem">
+      <div class="box-label">Remember</div>
+      This is a rigorous course. Every "obvious" step needs a theorem reference. When in doubt, ask: which σ-algebra? Which theorem justifies swapping limit and integral? Is the measure σ-finite? Is the function in \(L^1\)?
+    </div>
+  </section>
+
+  <footer>
+    Study guide based on Søren Kjærsgaard's Measure and Integration Theory exercise solutions, Autumn 2025.
+    Mathematical notation rendered with MathJax 3.
+  </footer>
+
+</main>
+</div>
+</body>
+</html>
